@@ -1,0 +1,35 @@
+@import url(../../../stylesheets/responsive.css);
+
+
+#project-jump .drdn-trigger {
+  font-size: 1em;
+}
+
+.flyout-menu {
+  background-color: var(--blue-1);
+}
+
+.flyout-menu h3 {
+  line-height: 24px;
+  height: 25px;
+  border-top: 1px solid rgba(var(--blue-4), 0.5);
+  border-bottom: 1px solid rgba(var(--blue-4), 0.5);
+  background-color: var(--blue-2);
+}
+
+.search-magnifier--flyout {
+  left: 15px;
+}
+
+@media screen and (max-width: 899px) {
+
+  #header {
+    background-color: var(--blue-1);
+  }
+  
+  #footer .col-develop {
+    height: auto;
+    float: left;
+  }
+  
+}
