@@ -1,0 +1,45 @@
+<h2><%l(:label_history_main_search)%></h2>
+
+
+
+<%= form_tag(search_status_history_path(@project)) do %>
+
+<div class="tabular">
+  <div class="splitcontent">
+    <div class="splitcontentleft">
+      <p>
+        <label><%=l(:label_history_status_from)%></label>
+        <%= select_tag 'status_from', options_from_collection_for_select(@statuses, "id", "name", @status_from) , :include_blank => true%>      
+      </p>
+      <p>
+        <label><%=l(:label_history_date_from)%><span class="required"> *</span></label>
+        <%= date_field(:dates, :date_from, {value:@date_from, :size => 10, :required => true}) %>
+        <%= calendar_for('dates_date_from') %>          
+      </p>
+    </div>
+    <div class="splitcontentright">
+      <p>
+        <label><%=l(:label_history_status_to)%></label>
+        <%= select_tag 'status_to', options_from_collection_for_select(@statuses, "id", "name", @status_to) , :include_blank => true%>
+        <%= calendar_for('status_from') %>
+      </p>
+      <p>
+        <label><%=l(:label_history_date_to)%><span class="required"> *</span></label>
+        <%= date_field(:dates, :date_to, {value: @date_to, :size => 10, :required => true}) %>
+        <%= calendar_for('dates_date_to') %>
+      </p>
+    </div>
+
+  </div>
+
+</div>
+<%= submit_tag l(:label_search)%>
+
+
+<% end %>
+
+<hr />
+<!-- Issue list -->
+<%= render :partial => 'list_simple', :locals => { :issues => @issues } %>
+<% include_calendar_headers_tags %>
+

@@ -1,0 +1,25 @@
+
+<% if(!project.children.empty?) %>
+  <h3 style="
+    	background-image: linear-gradient(to top, #CAD5D9 32%, #F5F5F5 96%);
+	border: 1px solid #C2C6C9;" class="<%= project.parent_id == nil ? 'pai' : 'filho' %>" id="<%=id ? id : nil %>">
+<% else %> 
+  <h3 class="filho" id="<%= id %>">
+<% end %>
+  <div class="project">
+    <%= link_to(h(project.name), {:controller => 'projects', :action => 'show', :id => project}, :class => "project#{User.current.member_of?(project) ? ' my-project' : nil}",:style => 'color:rgb(0,109,158);') %>
+  </div>
+</h3>
+<div>
+  <%= textilizable project.short_description.gsub(/\!.+\!/,""), :project => project %>  
+  <% if(!project.children.empty?) %>
+    <div class="accordion">
+      <% project.children.each do |child| %>
+        <%= render :partial => "list", :locals => { :project => child , :id => id ? id.to_s+'.'+child.id.to_s : nil} if child.visible? %>
+      <%- end %>
+    </div>
+  <%- end %>
+</div>
+
+<!-- :class => "project#{User.current.member_of?(project) ? ' my-project' : nil}" -->
+<!-- <%= project.name.parameterize.to_s %> -->

@@ -1,0 +1,10 @@
+{
+  "generator-asc-docker": {
+    "promptValues": {
+      "name": "ttt-redmine-image",
+      "group": "ttt",
+      "version": "0.0.0-SNAPSHOT"
+    },
+    "generator-version": "0.6.0-SNAPSHOT"
+  }
+}

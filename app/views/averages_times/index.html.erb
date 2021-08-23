@@ -1,0 +1,14 @@
+<% if User.current.admin? || User.verificarCordinador!='[]' %>
+        <app-average></app-average>
+        <base href="/issues_api/getCategories">
+        <%= stylesheet_link_tag "styles.css", :media => "all" %>
+        <%= javascript_include_tag "./average/main.js" %>
+        <%= javascript_include_tag "./average/polyfills.js" %>
+        <%= javascript_include_tag "./average/runtime.js" %>
+        <%= javascript_include_tag "./average/scripts.js" %>
+        <!-- javascript_include_tag "./average/vendor.js" -->
+<% else %>
+        <h2>403</h2>
+        <p id="errorExplanation">You are not autorized to access this page.</p>
+        <p><a href="javascript:history.back()">Back</a></p>
+<% end %>

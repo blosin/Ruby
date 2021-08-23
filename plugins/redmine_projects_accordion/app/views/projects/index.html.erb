@@ -1,0 +1,107 @@
+<% content_for :header_tags do %>
+    <%= auto_discovery_link_tag(:atom, {:action => 'index', :format => 'atom', :key => User.current.rss_key}) %>
+<% end %>
+
+<div class="contextual">
+    <%= link_to(l(:label_project_new), {:controller => 'projects', :action => 'new'}, :class => 'icon icon-add') if User.current.allowed_to?(:add_project, nil, :global => true) %>
+    <%= link_to(l(:label_issue_view_all), issues_path) if User.current.allowed_to?(:view_issues, nil, :global => true) %>
+    <%= link_to(l(:label_overall_spent_time), time_entries_path) if User.current.allowed_to?(:view_time_entries, nil, :global => true) %>
+    <%= link_to l(:label_overall_activity),
+                { :controller => 'activities', :action => 'index',
+                  :id => nil } %>
+</div>
+
+<h2><%=l(:label_project_plural)%>
+  &nbsp;
+  <form id="id_filtro" class="" action="#filter_search">
+    <input id="input_filtro" class="small" type="text" placeholder="Search for projects" style="border-radius: 5px;">
+  </form>
+</h2>
+
+<% @projects.delete_if { |p| !p.active? } -%>
+
+<% ids = @projects.map { |p| p.id } %> 
+<%- #unless p.children.empty? } %>
+<% ids.delete_if { |p| p.nil? } %>
+
+<% @projects.delete_if { |p| !p.parent_id.nil? } -%>
+
+<div class="accordion" id="main-accordion">
+  <% @projects.each_with_index do |project, i| %>
+    <%= render :partial => "list", :locals => { :project => project, :id => i} %>
+  <%- end %>
+</div>
+
+<% if User.current.logged? %>
+<p style="text-align:right;">
+<span class="my-project"><%= l(:label_my_projects) %></span>
+</p>
+<% end %>
+
+<% other_formats_links do |f| %>
+  <%= f.link_to 'Atom', :url => {:key => User.current.rss_key} %>
+<% end %>
+
+<% html_title(l(:label_project_plural)) -%>
+
+<script>
+$('.accordion').accordion( {
+  autoHeight: false,
+  collapsible: true, 
+  navigation:true, 
+  active: false,
+    heightStyle: "content"
+});
+$('#main-accordion').each(function(){
+  $(this).accordion("option", "active", 0);
+})
+$(".accordion h3 a.project").click(function() {
+  window.location = $(this).attr('href');
+  return false;
+});
+
+(function ($) {
+  
+  jQuery.expr[':'].Contains = function(a,i,m){
+      return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
+  };
+
+  $("#id_filtro").submit(function (event){
+    return false;
+  });
+
+  function listFilter(lista_pessoas) {
+    var input = $("#input_filtro");
+    var aux1, aux2;
+
+    $(input)
+      .change( function () {
+        var filter = $(this).val();
+        if(filter) {
+          $(lista_pessoas).find("h3.filho:not(:Contains(" + filter + "))").each(function(index){
+              ids = $(this).attr("id").split(".");
+              aux1 = $(document.getElementById('0.'+ids[1]));
+	      aux1.parent().accordion("option","active",false);
+	      aux1.hide();
+          });
+
+          $(lista_pessoas).find("h3.filho:Contains(" + filter + ")").each(function(index){
+              ids = $(this).attr("id").split(".");
+              $(document.getElementById('0.'+ids[1])).show();
+          });
+        } else {
+          $(lista_pessoas).find("h3").show();
+        }
+        return false;
+      })
+      .keyup( function () {
+          $(this).change();
+      });
+  }
+
+  $(function () {
+    listFilter($("#main-accordion"));
+  });
+}(jQuery));
+
+</script>

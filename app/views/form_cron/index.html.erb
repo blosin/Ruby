@@ -1,0 +1,23 @@
+<% if User.current.admin? || User.verificarCordinador!='[]' %>
+        <app-root></app-root>
+        <base href="/form_cron/index">
+        <%= stylesheet_link_tag "styles.css", :media => "all" %>
+        <%= javascript_include_tag "./cron/main.js" %>
+        <%= javascript_include_tag "./cron/polyfills.js" %>
+        <%= javascript_include_tag "./cron/runtime.js" %>
+        <%= javascript_include_tag "./cron/scripts.js" %>
+        <!--= javascript_include_tag "./cron/vendor.js" -->
+<% else %>
+        <h2>403</h2>
+        <p id="errorExplanation">You are not autorized to access this page.</p>
+        <p><a href="javascript:history.back()">Back</a></p>
+<% end %>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,6 @@
+.git
+Dockerfile
+.gitignore
+.dockerignore
+docker-entrypoint.sh.bkp
+bis
